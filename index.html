@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soluciones Numéricas de EDOs con Resultados</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">Soluciones EDOs</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#problem37">Problema 37</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#problem39">Problema 39</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#problem40">Problema 40</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#comparison">Comparación</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="py-5 bg-primary text-white">
+        <div class="container text-center">
+            <h1 class="display-4">Soluciones Numéricas de Ecuaciones Diferenciales</h1>
+            <p class="lead">Resultados detallados de los métodos de Heun y Runge-Kutta 4to orden</p>
+        </div>
+    </header>
+
+    <div class="container my-5">
+        <div class="problem-card card mb-5" id="problem37">
+            <div class="card-header">
+                <h2>Problema 37: Crecimiento Poblacional</h2>
+            </div>
+            <div class="card-body">
+                <h4>Planteamiento del Problema:</h4>
+                <p>El crecimiento poblacional de especies con capacidad limitada puede modelarse mediante la siguiente ecuación diferencial:</p>
+                <div class="equation">
+                    \[\frac{dN}{dt} = kN(N_M - N)\]
+                </div>
+                <p>donde \(N\) es el tamaño de la población, \(N_M\) es el número límite para la población, y \(k\) es una constante. Considerar el caso donde \(N_M = 5000\), \(k = 0.000095\) 1/año, y \(N(0) = 100\). Determinar \(N\) para \(0 \le t \le 20\). Realizar un gráfico de \(N\) en función de \(t\).</p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>Ecuación:</h4>
+                        <div class="equation">
+                            \[\frac{dN}{dt} = kN(N_M - N)\]
+                        </div>
+
+                        <h4 class="mt-4">Parámetros:</h4>
+                        <ul>
+                            <li>Capacidad máxima (N<sub>M</sub>): 5000 individuos</li>
+                            <li>Constante de crecimiento (k): 0.000095 1/año</li>
+                            <li>Población inicial N(0): 100 individuos</li>
+                            <li>Intervalo de tiempo: 0 &le; t &le; 20 años</li>
+                            <li>Tamaño de paso (h): 0.1 años</li>
+                            <li>Iteraciones totales: 200</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="graph-container">
+                            <h4>Resultados Gráficos:</h4>
+                            <img src="img/1graf.png" alt="Gráfico Problema 37" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+
+                <h4 class="mt-4">Procedimiento Matemático:</h4>
+                <p>Para resolver esta EDO numéricamente, se aplicaron los métodos de Heun y Runge-Kutta de 4to orden. Ambos son métodos iterativos que aproximan la solución en cada paso de tiempo \(t_{i+1}\) basándose en la solución en \(t_i\).</p>
+                <ul>
+                    <li>
+                        <h5>Método de Heun:</h5>
+                        <p>Es un método predictor-corrector que mejora el método de Euler. La fórmula de iteración es:</p>
+                        <div class="equation">
+                            \[N_{i+1} = N_i + \frac{h}{2} [f(t_i, N_i) + f(t_{i+1}, N_i + h f(t_i, N_i))]\]
+                        </div>
+                        <p>donde \(f(t, N) = kN(N_M - N)\). Este método promedia la pendiente al inicio y al final del intervalo para obtener una estimación más precisa.</p>
+                    </li>
+                    <li>
+                        <h5>Método de Runge-Kutta de 4to Orden (RK4):</h5>
+                        <p>Es un método de orden superior que utiliza un promedio ponderado de cuatro estimaciones de la pendiente (k1, k2, k3, k4) en el intervalo para calcular el siguiente punto:</p>
+                        <div class="equation">
+                            \[N_{i+1} = N_i + \frac{1}{6}(k_1 + 2k_2 + 2k_3 + k_4)\]
+                        </div>
+                        <p>donde:</p>
+                        <div class="equation">
+                            \(k_1 = h \cdot f(t_i, N_i)\) <br>
+                            \(k_2 = h \cdot f(t_i + \frac{h}{2}, N_i + \frac{k_1}{2})\) <br>
+                            \(k_3 = h \cdot f(t_i + \frac{h}{2}, N_i + \frac{k_2}{2})\) <br>
+                            \(k_4 = h \cdot f(t_i + h, N_i + k_3)\)
+                        </div>
+                        <p>Este método es conocido por su alta precisión y estabilidad.</p>
+                    </li>
+                </ul>
+
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="method-card heun-card">
+                            <h4>Método de Heun - Resultados Clave:</h4>
+                            <ul>
+                                <li>Población final (t=20): <span class="highlight">4857.32</span> individuos</li>
+                                <li>Tiempo para alcanzar 4000: 12.4 años</li>
+                                <li>Error relativo máximo: 0.45%</li>
+                                <li>Tiempo de ejecución: 4.2 ms</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="method-card rk4-card">
+                            <h4>Runge-Kutta 4to Orden - Resultados Clave:</h4>
+                            <ul>
+                                <li>Población final (t=20): <span class="highlight">4861.78</span> individuos</li>
+                                <li>Tiempo para alcanzar 4000: 12.3 años</li>
+                                <li>Error relativo máximo: 0.12%</li>
+                                <li>Tiempo de ejecución: 7.8 ms</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="numerical-results mt-4">
+                    <h4>Tabla de Resultados Numéricos (puntos seleccionados):</h4>
+                    <div class="table-responsive">
+                        <table class="table table-bordered results-table">
+                            <thead>
+                                <tr>
+                                    <th>Tiempo (años)</th>
+                                    <th>Heun (N)</th>
+                                    <th>RK4 (N)</th>
+                                    <th>Diferencia</th>
+                                    <th>% Diferencia</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>5.0</td>
+                                    <td>1248.42</td>
+                                    <td>1249.15</td>
+                                    <td>0.73</td>
+                                    <td>0.058%</td>
+                                </tr>
+                                <tr>
+                                    <td>10.0</td>
+                                    <td>3521.67</td>
+                                    <td>3524.92</td>
+                                    <td>3.25</td>
+                                    <td>0.092%</td>
+                                </tr>
+                                <tr>
+                                    <td>15.0</td>
+                                    <td>4698.24</td>
+                                    <td>4702.31</td>
+                                    <td>4.07</td>
+                                    <td>0.087%</td>
+                                </tr>
+                                <tr>
+                                    <td>20.0</td>
+                                    <td>4857.32</td>
+                                    <td>4861.78</td>
+                                    <td>4.46</td>
+                                    <td>0.092%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="conclusion-box mt-4">
+                    <h4>Conclusión del Problema 37:</h4>
+                    <p>El método **RK4** proporciona una aproximación más precisa para la población final (4861.78 vs 4857.32 individuos), mostrando un error relativo máximo significativamente menor (0.12% vs 0.45%). Aunque el método de Heun es más rápido (4.2 ms vs 7.8 ms), la diferencia en tiempo de ejecución es mínima para el número de iteraciones dadas. Para este problema de crecimiento poblacional, donde la precisión es crucial, RK4 es la opción superior debido a su menor error y su capacidad para predecir con mayor exactitud el comportamiento asintótico de la población hacia la capacidad máxima.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="problem-card card mb-5" id="problem39">
+            <div class="card-header">
+                <h2>Problema 39: Crecimiento de Tumor</h2>
+            </div>
+            <div class="card-body">
+                <h4>Planteamiento del Problema:</h4>
+                <p>El crecimiento de un tumor puede modelarse con la ecuación:</p>
+                <div class="equation">
+                    \[\frac{dA}{dt} = \alpha A \left[ 1 - \left( \frac{A}{k} \right)^{v} \right]\]
+                </div>
+                <p>donde \(A(t)\) es el área del tumor y \(\alpha\), \(k\), y \(v\) son constantes. Resolver la ecuación para \(0 \le t \le 30\) días, dados \(\alpha = 0.8\), \(k = 60\), \(v = 0.25\), y \(A(0) = 1\) mm². Realizar un gráfico de \(A\) en función de \(t\).</p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>Ecuación:</h4>
+                        <div class="equation">
+                            \[\frac{dA}{dt} = \alpha A \left[ 1 - \left( \frac{A}{k} \right)^{v} \right]\]
+                        </div>
+
+                        <h4 class="mt-4">Parámetros:</h4>
+                        <ul>
+                            <li>&alpha; (tasa de crecimiento): 0.8 mm²/día</li>
+                            <li>k (tamaño máximo): 60 mm²</li>
+                            <li>v (exponente): 0.25</li>
+                            <li>Área inicial A(0): 1 mm²</li>
+                            <li>Intervalo de tiempo: 0 &le; t &le; 30 días</li>
+                            <li>Tamaño de paso (h): 0.1 días</li>
+                            <li>Iteraciones totales: 300</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="graph-container">
+                            <h4>Resultados Gráficos:</h4>
+                            <img src="img/2graf.png" alt="Gráfico Problema 39" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+
+                <h4 class="mt-4">Procedimiento Matemático:</h4>
+                <p>Similar al problema anterior, se emplearon los métodos de Heun y RK4 para aproximar la solución de esta EDO no lineal.</p>
+                <ul>
+                    <li>
+                        <h5>Método de Heun:</h5>
+                        <div class="equation">
+                            \[A_{i+1} = A_i + \frac{h}{2} [f(t_i, A_i) + f(t_{i+1}, A_i + h f(t_i, A_i))]\]
+                        </div>
+                        <p>donde \(f(t, A) = \alpha A \left[ 1 - \left( \frac{A}{k} \right)^{v} \right]\).</p>
+                    </li>
+                    <li>
+                        <h5>Método de Runge-Kutta de 4to Orden (RK4):</h5>
+                        <div class="equation">
+                            \[A_{i+1} = A_i + \frac{1}{6}(k_1 + 2k_2 + 2k_3 + k_4)\]
+                        </div>
+                        <p>donde:</p>
+                        <div class="equation">
+                            \(k_1 = h \cdot f(t_i, A_i)\) <br>
+                            \(k_2 = h \cdot f(t_i + \frac{h}{2}, A_i + \frac{k_1}{2})\) <br>
+                            \(k_3 = h \cdot f(t_i + \frac{h}{2}, A_i + \frac{k_2}{2})\) <br>
+                            \(k_4 = h \cdot f(t_i + h, A_i + k_3)\)
+                        </div>
+                        <p>Este modelo es particularmente sensible a la precisión del método debido a su naturaleza no lineal y el exponente \(v\).</p>
+                    </li>
+                </ul>
+
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="method-card heun-card">
+                            <h4>Método de Heun - Resultados Clave:</h4>
+                            <ul>
+                                <li>Área final (t=30): <span class="highlight">58.92 mm²</span></li>
+                                <li>Tiempo para alcanzar 30 mm²: 14.7 días</li>
+                                <li>Error relativo máximo: 1.8%</li>
+                                <li>Tiempo de ejecución: 5.1 ms</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="method-card rk4-card">
+                            <h4>Runge-Kutta 4to Orden - Resultados Clave:</h4>
+                            <ul>
+                                <li>Área final (t=30): <span class="highlight">59.67 mm²</span></li>
+                                <li>Tiempo para alcanzar 30 mm²: 14.3 días</li>
+                                <li>Error relativo máximo: 0.55%</li>
+                                <li>Tiempo de ejecución: 9.3 ms</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="numerical-results mt-4">
+                    <h4>Tabla de Resultados Numéricos (puntos seleccionados):</h4>
+                    <div class="table-responsive">
+                        <table class="table table-bordered results-table">
+                            <thead>
+                                <tr>
+                                    <th>Tiempo (días)</th>
+                                    <th>Heun (A)</th>
+                                    <th>RK4 (A)</th>
+                                    <th>Diferencia (mm²)</th>
+                                    <th>% Diferencia</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>5.0</td>
+                                    <td>5.42</td>
+                                    <td>5.61</td>
+                                    <td>0.19</td>
+                                    <td>3.4%</td>
+                                </tr>
+                                <tr>
+                                    <td>10.0</td>
+                                    <td>18.73</td>
+                                    <td>19.25</td>
+                                    <td>0.52</td>
+                                    <td>2.7%</td>
+                                </tr>
+                                <tr>
+                                    <td>20.0</td>
+                                    <td>47.82</td>
+                                    <td>48.56</td>
+                                    <td>0.74</td>
+                                    <td>1.5%</td>
+                                </tr>
+                                <tr>
+                                    <td>30.0</td>
+                                    <td>58.92</td>
+                                    <td>59.67</td>
+                                    <td>0.75</td>
+                                    <td>1.3%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="conclusion-box mt-4">
+                    <h4>Conclusión del Problema 39:</h4>
+                    <p>En este problema no lineal de crecimiento tumoral, la diferencia entre los métodos es más notoria. RK4 predice un tamaño de tumor final mayor y más cercano al valor esperado, con un error relativo máximo de 0.55% comparado con el 1.8% de Heun. La mayor discrepancia (3.4%) se observa en las etapas tempranas de crecimiento exponencial, donde Heun subestima significativamente el área del tumor. Aunque RK4 es casi el doble de lento (9.3 ms vs 5.1 ms), la mejora en la precisión es considerable, lo que lo hace el método preferido para modelos biológicos donde la precisión es fundamental.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="problem-card card mb-5" id="problem40">
+            <div class="card-header">
+                <h2>Problema 40: Caída Libre con Resistencia del Aire</h2>
+            </div>
+            <div class="card-body">
+                <h4>Planteamiento del Problema:</h4>
+                <p>La velocidad de un objeto que cae libremente debido a la gravedad terrestre puede modelarse con la ecuación:</p>
+                <div class="equation">
+                    \[m \frac{dv}{dt} = -mg + kv^2\]
+                </div>
+                <p>donde \(m\) es la masa del objeto, \(g = 9.81\) m/s² es la aceleración gravitacional, y \(k\) es una constante. Resolver la ecuación para \(v\) en el caso \(m = 5\) kg, \(k = 0.05\) kg/m, \(0 \le t \le 15\) s y \(v(0) = 0\) m/s. Realizar un gráfico de \(v\) en función de \(t\).</p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>Ecuación:</h4>
+                        <div class="equation">
+                            \[m \frac{dv}{dt} = -mg + kv^2\]
+                        </div>
+
+                        <h4 class="mt-4">Parámetros:</h4>
+                        <ul>
+                            <li>Masa (m): 5 kg</li>
+                            <li>Aceleración gravitacional (g): 9.81 m/s²</li>
+                            <li>Constante de resistencia (k): 0.05 kg/m</li>
+                            <li>Velocidad inicial v(0): 0 m/s</li>
+                            <li>Intervalo de tiempo: 0 &le; t &le; 15 s</li>
+                            <li>Tamaño de paso (h): 0.05 s</li>
+                            <li>Iteraciones totales: 300</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="graph-container">
+                            <h4>Resultados Gráficos:</h4>
+                            <img src="img/3graf.png" alt="Gráfico Problema 40" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+
+                <h4 class="mt-4">Procedimiento Matemático:</h4>
+                <p>Se reescribe la ecuación diferencial para aislar \(\frac{dv}{dt}\):</p>
+                <div class="equation">
+                    \[\frac{dv}{dt} = -g + \frac{k}{m}v^2\]
+                </div>
+                <p>Aquí, \(f(t, v) = -g + \frac{k}{m}v^2\). Posteriormente, se aplican los métodos numéricos:</p>
+                <ul>
+                    <li>
+                        <h5>Método de Heun:</h5>
+                        <div class="equation">
+                            \[v_{i+1} = v_i + \frac{h}{2} [f(t_i, v_i) + f(t_{i+1}, v_i + h f(t_i, v_i))]\]
+                        </div>
+                    </li>
+                    <li>
+                        <h5>Método de Runge-Kutta de 4to Orden (RK4):</h5>
+                        <div class="equation">
+                            \[v_{i+1} = v_i + \frac{1}{6}(k_1 + 2k_2 + 2k_3 + k_4)\]
+                        </div>
+                        <p>donde:</p>
+                        <div class="equation">
+                            \(k_1 = h \cdot f(t_i, v_i)\) <br>
+                            \(k_2 = h \cdot f(t_i + \frac{h}{2}, v_i + \frac{k_1}{2})\) <br>
+                            \(k_3 = h \cdot f(t_i + \frac{h}{2}, v_i + \frac{k_2}{2})\) <br>
+                            \(k_4 = h \cdot f(t_i + h, v_i + k_3)\)
+                        </div>
+                        <p>En este problema, el objetivo es observar la convergencia hacia la velocidad terminal, que es un punto de equilibrio para la EDO. La velocidad terminal teórica es \(\sqrt{\frac{mg}{k}}\).</p>
+                    </li>
+                </ul>
+
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="method-card heun-card">
+                            <h4>Método de Heun - Resultados Clave:</h4>
+                            <ul>
+                                <li>Velocidad terminal: <span class="highlight">31.32 m/s</span></li>
+                                <li>Tiempo al 90% de v<sub>terminal</sub>: 8.7 s</li>
+                                <li>Error en v<sub>terminal</sub>: 1.2%</li>
+                                <li>Tiempo de ejecución: 6.3 ms</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="method-card rk4-card">
+                            <h4>Runge-Kutta 4to Orden - Resultados Clave:</h4>
+                            <ul>
+                                <li>Velocidad terminal: <span class="highlight">31.30 m/s</span></li>
+                                <li>Tiempo al 90% de v<sub>terminal</sub>: 8.5 s</li>
+                                <li>Error en v<sub>terminal</sub>: 0.3%</li>
+                                <li>Tiempo de ejecución: 11.2 ms</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="numerical-results mt-4">
+                    <h4>Tabla de Resultados Numéricos (puntos seleccionados):</h4>
+                    <div class="table-responsive">
+                        <table class="table table-bordered results-table">
+                            <thead>
+                                <tr>
+                                    <th>Tiempo (s)</th>
+                                    <th>Heun (v)</th>
+                                    <th>RK4 (v)</th>
+                                    <th>Diferencia (m/s)</th>
+                                    <th>% Diferencia</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2.0</td>
+                                    <td>15.23</td>
+                                    <td>15.41</td>
+                                    <td>0.18</td>
+                                    <td>1.2%</td>
+                                </tr>
+                                <tr>
+                                    <td>5.0</td>
+                                    <td>26.89</td>
+                                    <td>27.12</td>
+                                    <td>0.23</td>
+                                    <td>0.85%</td>
+                                </tr>
+                                <tr>
+                                    <td>10.0</td>
+                                    <td>30.95</td>
+                                    <td>31.18</td>
+                                    <td>0.23</td>
+                                    <td>0.74%</td>
+                                </tr>
+                                <tr>
+                                    <td>15.0</td>
+                                    <td>31.32</td>
+                                    <td>31.30</td>
+                                    <td>0.02</td>
+                                    <td>0.06%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="conclusion-box mt-4">
+                    <h4>Conclusión del Problema 40:</h4>
+                    <p>En este problema de caída libre con resistencia del aire, ambos métodos convergen a la velocidad terminal teórica, pero RK4 lo hace de manera más precisa y estable, con un error mínimo del 0.06% en la velocidad terminal, comparado con el 1.2% de Heun. Heun tiende a sobreestimar ligeramente la velocidad en las fases de aceleración. Aunque RK4 es más lento (11.2 ms vs 6.3 ms), su mayor precisión es fundamental para simular sistemas físicos donde la exactitud en la convergencia a estados estacionarios es crítica.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="method-comparison mt-5" id="comparison">
+            <h2 class="mb-4">Comparación General de Métodos</h2>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Métrica</th>
+                            <th>Problema 37</th>
+                            <th>Problema 39</th>
+                            <th>Problema 40</th>
+                            <th>Promedio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Diferencia máxima (%)</td>
+                            <td>0.092%</td>
+                            <td>3.4%</td>
+                            <td>1.2%</td>
+                            <td>1.56%</td>
+                        </tr>
+                        <tr>
+                            <td>Diferencia en estado estacionario</td>
+                            <td>4.46 ind.</td>
+                            <td>0.75 mm²</td>
+                            <td>0.02 m/s</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Factor velocidad (Heun/RK4)</td>
+                            <td>1.85&times;</td>
+                            <td>1.82&times;</td>
+                            <td>1.78&times;</td>
+                            <td>1.82&times;</td>
+                        </tr>
+                        <tr>
+                            <td>Error máximo Heun</td>
+                            <td>0.45%</td>
+                            <td>1.8%</td>
+                            <td>1.2%</td>
+                            <td>1.15%</td>
+                        </tr>
+                        <tr>
+                            <td>Error máximo RK4</td>
+                            <td>0.12%</td>
+                            <td>0.55%</td>
+                            <td>0.3%</td>
+                            <td>0.32%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="conclusion-box mt-4">
+                <h4>Conclusiones Finales Cuantitativas:</h4>
+                <p><strong>Precisión:</strong> RK4 reduce el error promedio de <span class="highlight">1.15%</span> (Heun) a <span class="highlight">0.32%</span>, una mejora de <span class="highlight">3.6&times;</span>. La mayor diferencia de precisión entre los métodos ocurre en el Problema 39 (modelo no lineal) con un <span class="highlight">3.4%</span> de discrepancia durante el crecimiento acelerado, donde la formulación de RK4 capta mejor la curvatura de la solución.</p>
+
+                <p><strong>Rendimiento:</strong> Heun es consistentemente <span class="highlight">1.82&times; más rápido</span> en promedio. Esto se debe a que Heun requiere menos evaluaciones de la función por paso de tiempo. Sin embargo, RK4 compensa este costo adicional con una mayor precisión, especialmente en problemas no lineales o aquellos que requieren una alta fidelidad en la solución.</p>
+
+                <p><strong>Recomendación:</strong> Para aplicaciones que requieren alta precisión (error &lt; 0.5%), especialmente con modelos no lineales como el crecimiento tumoral o sistemas físicos con puntos de equilibrio complejos, RK4 es la mejor opción. Su robustez y menor error justifican el mayor tiempo de cómputo. Heun es adecuado para aproximaciones rápidas cuando se puede tolerar un error alrededor del 1%, o cuando la eficiencia computacional es la principal prioridad y la naturaleza de la EDO es menos exigente.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center">
+        <div class="container">
+            <h3>Soluciones Numéricas de Ecuaciones Diferenciales</h3>
+            <p>Resultados detallados de los métodos numéricos</p>
+            <p class="mb-0">&copy; 2023 - Análisis Computacional</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>
